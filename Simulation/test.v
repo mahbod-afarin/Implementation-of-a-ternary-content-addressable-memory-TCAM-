@@ -1,0 +1,34 @@
+module test;
+  wire[6:0] r_addr0, r_addr1;
+  reg wr, reset, clk;
+  reg[9:0] data;
+  reg[3:0] addr;
+  TCAM tcam(r_addr0, r_addr1, data, addr, wr, reset, clk);
+  
+  initial
+  begin
+    reset = 1;
+    clk = 0;
+    #5 reset = 0;
+    wr = 1;
+    addr = 4'd4;
+    data = 10'b0001001100;
+    #10
+    addr = 4'd1;
+    data = 10'b0001000111;
+    #10
+    addr = 4'd6;
+    data = 10'b0001000111;
+    #10
+    wr = 0;
+    data = 10'b0001001100;
+    #10
+    data = 10'b0001000111;
+    #10
+    $stop;
+  end
+  
+  always
+    #5 clk = ~clk;
+  
+endmodule
